@@ -3,6 +3,12 @@
 
   const channels = ["station", "drone"];
   const states = new Map(channels.map((name) => [name, "checking"]));
+  const runtime = window.SCENIC_PLATFORM_CONFIG || {};
+  const apiBaseUrl = String(runtime.apiBaseUrl || "").replace(/\/$/, "");
+
+  function apiUrl(path) {
+    return apiBaseUrl ? `${apiBaseUrl}${path}` : path;
+  }
 
   function toast(message) {
     let element = document.querySelector(".platform-toast");
@@ -99,8 +105,17 @@
   }
 
   async function loadVideoConfig() {
+    const publicConfig = {
+      station_video: runtime.stationVideo,
+      drone_video: runtime.droneVideo,
+    };
+    if (publicConfig.station_video || publicConfig.drone_video) {
+      mountFeed("station", publicConfig.station_video);
+      mountFeed("drone", publicConfig.drone_video);
+      return;
+    }
     try {
-      const config = await fetchJson("/api/platform/config", null, 1800);
+      const config = await fetchJson(apiUrl("/api/platform/config"), null, 1800);
       mountFeed("station", config.station_video);
       mountFeed("drone", config.drone_video);
     } catch (_) {
@@ -113,7 +128,7 @@
 
   async function refreshMission() {
     try {
-      const snapshot = await fetchJson("/api/base/status", null, 1400);
+      const snapshot = await fetchJson(apiUrl("/api/base/status"), null, 1400);
       const button = document.getElementById("dispatchMission");
       const mission = snapshot.mission;
       if (!mission) {
@@ -139,7 +154,7 @@
     const token = window.prompt("请输入综合指挥操作令牌");
     if (!token) return;
     try {
-      await fetchJson("/api/base/missions/dispatch", {
+      await fetchJson(apiUrl("/api/base/missions/dispatch"), {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ mission_id: missionId }),

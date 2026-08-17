@@ -1,0 +1,12 @@
+{
+  "name": "scenic-safety-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "景区安全智能监测与无人机救援平台静态前端",
+  "scripts": {
+    "build": "node scripts/build-cloudflare.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
