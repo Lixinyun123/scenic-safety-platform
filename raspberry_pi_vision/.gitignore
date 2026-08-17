@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+output/*.jpg
+output/*.jsonl
+*.pt
+*_ncnn_model/
+vendor/
+water-person-detector.env

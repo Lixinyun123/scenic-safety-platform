@@ -1,0 +1,33 @@
+logLevel: info
+logDestinations: [stdout]
+readTimeout: 10s
+writeTimeout: 10s
+
+api: true
+apiAddress: 127.0.0.1:9997
+
+rtsp: true
+rtspTransports: [tcp]
+rtspAddress: :8554
+
+rtmp: false
+hls: false
+srt: false
+
+webrtc: true
+webrtcAddress: :8889
+webrtcAllowOrigins: ['*']
+webrtcLocalUDPAddress: :8189
+webrtcLocalTCPAddress: :8189
+webrtcIPsFromInterfaces: false
+webrtcAdditionalHosts: [192.168.1.202]
+
+pathDefaults:
+  sourceOnDemand: true
+  sourceOnDemandStartTimeout: 15s
+  sourceOnDemandCloseAfter: 10s
+  rtspTransport: tcp
+
+paths:
+  station:
+    source: publisher

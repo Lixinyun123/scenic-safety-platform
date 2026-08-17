@@ -1,0 +1,37 @@
+logLevel: info
+logDestinations: [stdout]
+
+rtsp: true
+rtspTransports: [tcp]
+rtspAddress: 127.0.0.1:8554
+rtmp: false
+hls: true
+hlsAddress: :8888
+hlsAllowOrigins: ["*"]
+hlsAlwaysRemux: true
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+hlsSegmentDuration: 2s
+hlsPartDuration: 200ms
+srt: false
+playback: false
+moq: false
+
+webrtc: true
+webrtcAddress: :8889
+webrtcAllowOrigins: ["*"]
+webrtcLocalUDPAddress: :8189
+webrtcLocalTCPAddress: :8189
+webrtcIPsFromInterfaces: true
+webrtcAdditionalHosts: [100.94.255.54]
+
+paths:
+  rescue:
+    source: publisher
+    runOnInit: >-
+      ffmpeg -hide_banner -loglevel warning -fflags +genpts -use_wallclock_as_timestamps 1
+      -f v4l2 -input_format h264 -framerate 30 -video_size 1280x720
+      -i /dev/v4l/by-id/usb-SJCAM_4000-video-index0
+      -map 0:v:0 -c:v copy -an
+      -f rtsp -rtsp_transport tcp rtsp://127.0.0.1:8554/rescue
+    runOnInitRestart: true

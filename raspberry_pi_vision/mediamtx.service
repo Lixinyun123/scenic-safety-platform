@@ -1,0 +1,21 @@
+[Unit]
+Description=MediaMTX H.264 WebRTC Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=znfxq
+Group=znfxq
+SupplementaryGroups=video
+ExecStart=/usr/local/bin/mediamtx /etc/mediamtx.yml
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+Nice=-5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+

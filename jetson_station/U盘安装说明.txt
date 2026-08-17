@@ -1,0 +1,18 @@
+Jetson Nano 基站摄像头离线安装
+================================
+
+1. 把U盘插入Jetson Nano。
+2. 打开U盘中的“Jetson基站摄像头”目录。
+3. 在该目录空白处打开终端。
+4. 执行：
+
+   chmod +x install_station_video.sh
+   sudo ./install_station_video.sh
+
+5. 摄像头用户名直接回车使用 admin，然后输入摄像头密码。
+   输入密码时终端不显示字符，这是正常现象。
+
+安装成功后会显示：
+- 云平台视频：http://192.168.1.202:8889/station
+- 本地识别流：rtsp://127.0.0.1:8554/station
+

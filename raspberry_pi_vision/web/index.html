@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#050806">
+  <title>无人机作业 · 景区安全智能监测平台</title>
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/drone/assets/dashboard.css?v=20260814-1">
+</head>
+<body>
+  <header class="global-header">
+    <div class="brand"><span class="brand-icon">◆</span><strong>景区安全智能监测平台</strong></div>
+    <nav class="platform-workspaces" aria-label="平台工作台">
+      <a href="/"><span>综合指挥</span><small>COMMAND</small></a>
+      <a class="active" href="/drone/" aria-current="page"><span>无人机作业</span><small>AIR OPS</small></a>
+    </nav>
+    <div class="header-right">
+      <span class="header-link online" id="linkState"><i></i>平台在线</span>
+      <div class="language-switcher">
+        <button class="language-button" id="languageButton" type="button" aria-haspopup="true" aria-expanded="false"><span id="languageLabel">简体中文</span><i></i></button>
+        <div class="language-menu" id="languageMenu" hidden><button type="button" data-language="zh-CN">简体中文</button><button type="button" data-language="en">English</button></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="map-stage">
+    <div id="map" aria-label="水域态势地图"></div>
+    <div class="map-fallback"><span>卫星地图加载中</span><small>无互联网时仍可使用视频与遥测功能</small></div>
+    <div class="map-vignette"></div>
+
+    <section class="float-column left-column">
+      <article class="hud-panel aircraft-panel device-offline" id="aircraftPanel">
+        <header><h2><span>▣</span>飞行器</h2><div class="device-status-stack"><em id="aircraftOnline">设备未连接</em><small id="deviceLastSeen">等待机载端</small></div></header>
+        <div class="aircraft-name"><div><strong>RESCUE-01</strong><small>水域搜救无人机</small></div><span class="standby offline" id="aircraftStateBadge">离线</span></div>
+        <div class="flight-state">
+          <div class="ring" id="overallRing"><span id="overallStatus">--</span><small>综合状态</small></div>
+          <ul><li><i class="blue"></i>飞行状态<b id="flightState">未连接</b></li><li><i class="green"></i>GPS定位<b id="gpsState">--</b></li><li><i class="amber"></i>飞行模式<b id="flightMode">--</b></li><li><i class="gray"></i>解锁状态<b id="armedState">--</b></li></ul>
+        </div>
+        <div class="flight-metrics"><div id="baroHeightMetric"><small>气压计高度</small><strong><span id="flightAltitude">--</span> <em>m</em></strong></div><div id="flowHeightMetric"><small>光流高度</small><strong><span id="flowAltitude">--</span> <em>m</em></strong></div><div><small>水平速度</small><strong><span id="groundSpeed">--</span> <em>m/s</em></strong></div></div>
+        <div class="battery-row"><div class="battery-main"><span><i class="battery-icon" aria-hidden="true"></i>飞行电池</span><div class="battery-track"><i id="batteryBar"></i></div></div><strong id="batteryPercent">--%</strong></div>
+        <div class="quad-stats"><div><strong id="aiFps">--</strong><small>识别FPS</small></div><div><strong id="peopleTotal">0</strong><small>当前目标</small></div><div><strong id="linkLatency">--</strong><small>链路ms</small></div><div><strong id="satelliteCount">--</strong><small>卫星数</small></div></div>
+      </article>
+
+      <article class="video-console" id="videoConsole">
+        <header><div><span class="live-dot"></span><strong>机载识别画面</strong></div><div><b id="visionStatus">AI连接中</b><button id="minimizeVideo" type="button">—</button><button id="fullscreenVideo" type="button">⛶</button></div></header>
+        <div class="video-body source-offline" id="videoBody"><div class="video-placeholder" id="videoPlaceholder"><span class="camera-offline-icon">▱</span><strong id="videoPlaceholderTitle">无人机设备未连接</strong><small id="videoPlaceholderText">等待机载端接入图传网络</small></div><iframe id="rtc" title="机载实时视频" allow="autoplay; fullscreen"></iframe><canvas id="overlay"></canvas><div class="reticle"></div><div class="video-readout"><span>PERSON DETECTION</span><b id="videoDetection">服务离线</b></div></div>
+        <footer><span><i class="cyan"></i>AI识别</span><span><i class="green"></i>视频链路</span><span id="videoFps">-- FPS</span><button id="confirmTargetBottom" type="button" disabled>确认目标</button></footer>
+      </article>
+    </section>
+
+    <section class="float-column right-column">
+      <article class="hud-panel flight-control-panel device-offline" id="flightControlPanel">
+        <header><h2><span>⌁</span>飞行控制</h2><em class="control-lock" id="controlLock">安全锁定</em></header>
+        <div class="control-overview">
+          <div><small>起飞准备</small><strong id="preflightTitle">等待自检</strong><span id="preflightSubtitle">连接飞控后检查系统状态</span></div>
+          <div class="readiness-score" id="readinessGauge"><b id="preflightScore">0/4</b><small>检查通过</small></div>
+        </div>
+        <div class="preflight-grid" id="preflightGrid">
+          <div id="checkFlightController"><i></i><span><b id="checkFlightControllerLabel">飞控链路</b><small id="checkFlightControllerText">等待数据</small></span></div>
+          <div id="checkBattery"><i></i><span><b id="checkBatteryLabel">电池状态</b><small id="checkBatteryText">等待数据</small></span></div>
+          <div id="checkFlow"><i></i><span><b id="checkFlowLabel">光流状态</b><small id="checkFlowText">等待数据</small></span></div>
+          <div id="checkRange"><i></i><span><b id="checkRangeLabel">下视测距</b><small id="checkRangeText">等待数据</small></span></div>
+        </div>
+        <div class="control-actions">
+          <button class="self-check-button" id="runPreflightCheck" type="button">执行自检</button>
+          <button class="flight-action" id="armButton" type="button" disabled>解锁</button>
+          <button class="flight-action primary" id="takeoffButton" type="button" disabled>起飞</button>
+        </div>
+        <div class="control-safety"><span>遥控器优先</span><b>台架模式 · 起飞锁定</b></div>
+      </article>
+
+      <article class="hud-panel task-panel target-awareness-panel device-offline" id="targetAwarenessPanel">
+        <header><h2><span>▧</span>目标态势</h2><em class="ai-state" id="aiStateBadge">未连接</em></header>
+        <div class="target-summary"><div><span>AI目标状态</span><strong id="targetStatus">持续监测中</strong></div><span class="target-pill" id="targetPill">0 目标</span></div>
+        <div class="confidence"><span>最高置信度</span><div><i id="confidenceBar"></i></div><b id="confidenceValue">--</b></div>
+        <div class="event-stream" id="eventStream"><div id="visionConnectionEvent"><i></i><p><strong id="visionEventTitle">识别服务未连接</strong><small id="visionEventText">不影响平台其他功能</small></p><time id="visionEventTime">离线</time></div></div>
+        <button class="target-button" id="confirmTarget" type="button" disabled>确认目标位置</button>
+      </article>
+
+      <article class="hud-panel data-panel mission-summary-panel">
+        <header><h2><span>▱</span>任务摘要</h2><em>本次飞行</em></header>
+        <div class="data-grid"><div><strong id="missionTargetCount">0</strong><small>任务目标</small></div><div><strong id="sharedMissionStatus">待命</strong><small>任务状态</small></div><div><strong id="sharedMissionTarget">--</strong><small>目标坐标</small></div></div>
+      </article>
+    </section>
+
+    <div class="map-toolbar"><button type="button" id="zoomIn">＋</button><button type="button" id="zoomOut">−</button><button type="button" id="locateMap">◎</button></div>
+    <div class="compass" aria-label="飞行器航向指南针">
+      <span class="cardinal north">N</span><span class="cardinal east">E</span>
+      <span class="cardinal south">S</span><span class="cardinal west">W</span>
+      <i class="compass-needle" id="compassNeedle"></i>
+      <b class="heading-cardinal" id="headingCardinal">N</b>
+      <strong id="headingValue">000°</strong>
+    </div>
+    <div class="map-footer"><span>⌨</span><span>● 100%</span><b id="coordinateStatus">等待GPS定位</b><span id="aslValue">BARO: --</span><span id="aglValue">AGL: --</span><span id="speedValue">SPD: --</span><span>WGS 84 → GCJ-02</span></div>
+  </main>
+  <div class="toast" id="toast"></div>
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script src="/drone/assets/dashboard.js?v=20260814-1"></script>
+</body>
+</html>

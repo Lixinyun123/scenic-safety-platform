@@ -1,0 +1,25 @@
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(76, 201, 216, .14);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  left: 12px;
+  top: -48px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #eafcff;
+  color: #07101b;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.skip-link:focus { top: 8px; }
+h1, h2, h3 { text-wrap: balance; }
+.sensor-grid strong,
+.incident-stats strong,
+.mission-data b,
+.device-list small,
+.global-status { font-variant-numeric: tabular-nums; }

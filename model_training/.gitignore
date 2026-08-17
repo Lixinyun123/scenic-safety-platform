@@ -1,0 +1,7 @@
+raw_videos/
+dataset/images/
+runs/
+*.pt
+dataset/data.resolved.yaml
+__pycache__/
+*.pyc

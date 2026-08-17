@@ -1,0 +1,11 @@
+[Unit]
+Description=Maximum CPU performance for water person detector
+Before=water-person-detector.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

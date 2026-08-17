@@ -1,0 +1,48 @@
+.codex_raspberrypi_ed25519
+.codex_raspberrypi_ed25519.pub
+.codex_known_hosts
+.codex_doc_review/
+.codex_doc_tmp/
+.ground_dashboard_config.ps1
+raspberry_pi_vision/ground_output/
+raspberry_pi_vision/dashboard-server.env
+.ground_dashboard.stdout.log
+.ground_dashboard.stderr.log
+.base_station.stdout.log
+.base_station.stderr.log
+.station_camera_setup_status.json
+
+# Python caches and local environments
+**/__pycache__/
+**/*.py[cod]
+**/.venv/
+**/venv/
+
+# Runtime configuration and credentials
+*.env
+*.env.*
+!*.env.example
+.jetson_ssh/
+.jetson_known_hosts
+.pi_probe_known_hosts
+*.pem
+*.key
+
+# Runtime data, logs and generated outputs
+*.log
+*.jsonl
+**/output/
+**/runs/
+**/raw_videos/
+
+# Models, datasets, dependencies and downloaded binaries
+**/vendor/
+**/offline_wheels/
+**/*.pt
+**/*_ncnn_model/
+model_training/dataset/images/
+model_training/dataset/data.resolved.yaml
+jetson_station/*.tar.gz
+
+# Local release archives
+*.zip

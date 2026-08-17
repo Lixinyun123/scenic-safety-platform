@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101b">
+  <title>景区安全智能监测平台</title>
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/styles.css?v=20260815-11">
+  <link rel="stylesheet" href="/accessibility.css?v=20260812-7">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>
+        <div><strong>景区安全智能监测平台</strong><span>SCENIC SAFETY COMMAND</span></div>
+      </div>
+      <nav class="workspace-switch" aria-label="平台工作台">
+        <a class="active" href="/" aria-current="page"><span>综合指挥</span><small>COMMAND</small></a>
+        <a href="/drone/"><span>无人机作业</span><small>AIR OPS</small></a>
+      </nav>
+      <div class="global-status">
+        <button type="button" class="language-toggle" aria-label="切换界面语言">简体中文⌄</button>
+      </div>
+    </header>
+
+    <main class="workspace" id="main-content">
+      <section class="map-canvas" aria-label="景区实时态势地图">
+        <div id="gis-map" class="gis-map" aria-label="可缩放建筑物地图"></div>
+        <div class="map-offline" id="map-offline" hidden><strong>地图底图暂不可用</strong><span>设备与告警数据仍可正常查看</span></div>
+
+        <div class="map-search"><span aria-hidden="true">⌕</span><p>搜索设备、告警或区域</p><button type="button">图层</button></div>
+        <div class="map-summary"><span><i class="dot green"></i>5 / 5 设备在线</span><span><i class="dot amber"></i>2 条活动告警</span><span>今日巡检 6 次</span></div>
+        <div class="map-actions"><button type="button" aria-label="放大地图">＋</button><button type="button" aria-label="缩小地图">−</button><button type="button" aria-label="定位地图">◎</button></div>
+
+        <section class="video-console" aria-label="现场视频联动">
+          <div class="console-head">
+            <div><h2>现场视频联动</h2><span>基站与无人机双路监控</span></div>
+            <div class="console-status"><i class="dot" id="videoSummaryDot"></i><span id="videoSummaryText">视频链路检查中</span><button id="fullscreenFeeds" type="button">全屏查看</button></div>
+          </div>
+          <div class="video-pair">
+            <article class="feed selected" data-video-channel="station">
+              <img src="/assets/scenic-monitor-demo.png" width="1664" height="936" fetchpriority="high" alt="滨水监测基站演示画面">
+              <div class="feed-overlay"></div>
+              <div class="feed-top"><span><i class="dot red"></i>LIVE · 演示</span><b>滨水固定摄像机</b></div>
+              <div class="feed-bottom"><span>1080P · 30 FPS</span><span>延迟 118 ms</span></div>
+            </article>
+            <article class="feed" data-video-channel="drone">
+              <img src="/assets/drone-monitor-demo.png" width="1664" height="936" fetchpriority="high" alt="无人机航拍演示画面">
+              <div class="feed-overlay"></div>
+              <div class="feed-top"><span><i class="dot red"></i>LIVE · 演示</span><b>救援无人机 01</b></div>
+              <div class="flight-reticle" aria-hidden="true"><i></i></div>
+              <div class="feed-bottom"><span>高度 32.6 m</span><span>速度 0.0 m/s</span><span>电量 86%</span></div>
+            </article>
+          </div>
+        </section>
+
+      </section>
+
+      <aside class="side-column left-column">
+        <section class="panel device-panel">
+          <header class="panel-header"><div><span>站点状态</span><h2>设备运行概览</h2></div><em class="good">全部在线</em></header>
+          <div class="station-card">
+            <span class="station-id">A1</span><div><strong>滨水监测基站</strong><small>东部景区 · A-01监测区</small></div><b>在线</b>
+          </div>
+          <div class="device-list">
+            <div><i class="dot green"></i><span><b>STM32采集终端</b><small>RS485 · 8项数据</small></span><em>正常</em></div>
+            <div><i class="dot green"></i><span><b>Jetson边缘计算</b><small>推理 18 FPS · 负载42%</small></span><em>正常</em></div>
+            <div><i class="dot green"></i><span><b>固定摄像机 01</b><small>1080P · 码率3.8 Mbps</small></span><em>在线</em></div>
+            <div><i class="dot green"></i><span><b>LQ-3数据链路</b><small>信号 -58 dBm · 延迟18 ms</small></span><em>良好</em></div>
+            <div><i class="dot amber"></i><span><b>救援无人机 01</b><small>飞控就绪 · 电量86%</small></span><em>待命</em></div>
+          </div>
+        </section>
+
+        <section class="panel sensor-panel">
+          <header class="panel-header"><div><span>环境感知</span><h2>实时环境数据</h2></div><button type="button">详情</button></header>
+          <div class="sensor-grid">
+            <div><span>空气温度</span><strong>26.5</strong><small>°C</small></div>
+            <div><span>空气湿度</span><strong>68</strong><small>%RH</small></div>
+            <div><span>瞬时风速</span><strong>3.2</strong><small>m/s</small></div>
+            <div><span>累计雨量</span><strong>1.8</strong><small>mm</small></div>
+            <div class="attention"><span>监测水位</span><strong>2.36</strong><small>m</small></div>
+            <div><span>紫外线</span><strong>4</strong><small>级</small></div>
+            <div><span>PM2.5</span><strong>18</strong><small>μg/m³</small></div>
+            <div><span>烟雾浓度</span><strong>0.03</strong><small>%</small></div>
+          </div>
+          <div class="trend-title"><span>近60分钟水位趋势</span><b><i></i>实时值 <em></em>预警线</b></div>
+          <svg class="trend-chart" viewBox="0 0 300 96" preserveAspectRatio="none" aria-label="近60分钟水位演示趋势">
+            <defs><linearGradient id="waterFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cc9d8" stop-opacity=".3"/><stop offset="1" stop-color="#4cc9d8" stop-opacity="0"/></linearGradient></defs>
+            <line x1="0" y1="20" x2="300" y2="20"/><line x1="0" y1="48" x2="300" y2="48"/><line x1="0" y1="76" x2="300" y2="76"/>
+            <path class="trend-area" d="M0 76 C30 74 51 69 75 68 S115 62 143 59 S181 51 206 43 S253 32 300 27 L300 90 L0 90Z"/>
+            <path class="trend-line" d="M0 76 C30 74 51 69 75 68 S115 62 143 59 S181 51 206 43 S253 32 300 27"/>
+            <path class="threshold" d="M0 39 H300"/>
+          </svg>
+          <div class="chart-time"><span>13:30</span><span>14:00</span><span>14:30</span></div>
+        </section>
+      </aside>
+
+      <aside class="side-column right-column">
+        <section class="panel alert-panel">
+          <header class="panel-header"><div><span>实时事件</span><h2>告警与现场处置</h2></div><em class="risk">2条待处理</em></header>
+          <div class="alert-tabs"><button type="button" class="active">待处理 2</button><button type="button">处理中 0</button><button type="button">今日记录 6</button></div>
+          <div class="alert-items">
+            <button type="button" class="alert-row active"><i class="dot red"></i><span class="alert-copy"><b>湿地观测点水位异常</b><small>14:26:18 · 持续2分18秒</small></span><em>紧急</em></button>
+            <button type="button" class="alert-row"><i class="dot amber"></i><span class="alert-copy"><b>滨水步道人流超限</b><small>14:21:04 · 当前87人</small></span><em>警告</em></button>
+          </div>
+        </section>
+
+        <section class="panel incident-panel">
+          <header class="panel-header"><div><span>当前事件</span><h2>水位异常处置</h2></div><span class="event-time">已持续 02:18</span></header>
+          <div class="incident-location"><i></i><div><strong>湿地观测点</strong></div><button type="button">地图定位</button></div>
+          <div class="incident-stats">
+            <div><span>当前水位</span><strong>2.36 m</strong></div><div><span>预警阈值</span><strong>2.20 m</strong></div>
+            <div><span>变化速度</span><strong>+0.08 m/h</strong></div>
+          </div>
+          <div class="evidence"><span>联动证据</span><div><b>水位传感器超限</b><em>已确认</em></div><div><b>AI风险复核</b><em>无人员落水</em></div></div>
+          <div class="incident-actions"><button type="button">标记误报</button><button type="button" class="confirm">确认事件</button></div>
+        </section>
+
+        <section class="panel response-panel">
+          <header class="panel-header"><div><span>应急联动</span><h2>无人机响应</h2></div></header>
+          <div class="drone-health">
+            <div class="drone-glyph">⌁</div><div><strong>救援无人机 01</strong><span>自检通过 · 定位正常</span></div><b>86%</b>
+          </div>
+          <div class="mission-data"><div><span>目标距离</span><b>620 m</b></div><div><span>预计到达</span><b>01:45</b></div><div><span>任务高度</span><b>35 m</b></div></div>
+          <button type="button" class="dispatch-button" id="dispatchMission">确认事件后派遣无人机</button>
+        </section>
+      </aside>
+    </main>
+  </div>
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script src="/map.js?v=20260815-8"></script>
+  <script src="/platform.js?v=20260814-1"></script>
+</body>
+</html>

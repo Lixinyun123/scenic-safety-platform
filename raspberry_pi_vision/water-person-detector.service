@@ -1,0 +1,26 @@
+[Unit]
+Description=Raspberry Pi Water Person Detector
+After=network-online.target mediamtx.service
+After=water-detector-performance.service
+Wants=network-online.target water-detector-performance.service
+Requires=mediamtx.service
+
+[Service]
+Type=simple
+User=znfxq
+Group=znfxq
+WorkingDirectory=/home/znfxq/raspberry_pi_vision
+ExecStart=/home/znfxq/raspberry_pi_vision/.venv313/bin/python -u /home/znfxq/raspberry_pi_vision/detect_person.py --camera rtsp://127.0.0.1:8554/rescue --threads 3 --no-display
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+Nice=-10
+CPUWeight=10000
+OOMScoreAdjust=-500
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=/etc/water-person-detector.env
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

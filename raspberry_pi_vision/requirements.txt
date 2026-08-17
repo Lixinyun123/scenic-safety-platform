@@ -1,0 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.12.1+cpu
+torchvision==0.27.1+cpu
+ultralytics==8.4.116
+ncnn==1.0.20260526
+pnnx==20260526; platform_machine == "aarch64"
+pymavlink>=2.4.49,<3

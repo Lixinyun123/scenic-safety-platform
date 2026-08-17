@@ -1,0 +1,18 @@
+[Unit]
+Description=Read-only Pixhawk MAVLink Telemetry Bridge
+After=network.target
+
+[Service]
+Type=simple
+User=znfxq
+Group=znfxq
+SupplementaryGroups=dialout
+WorkingDirectory=/home/znfxq/raspberry_pi_vision
+EnvironmentFile=-/home/znfxq/raspberry_pi_vision/mavlink-telemetry.env
+ExecStart=/home/znfxq/raspberry_pi_vision/.venv313/bin/python -u /home/znfxq/raspberry_pi_vision/mavlink_telemetry.py --connection ${MAVLINK_CONNECTION} --baud ${MAVLINK_BAUD}
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
