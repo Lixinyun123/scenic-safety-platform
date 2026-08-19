@@ -424,6 +424,90 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--
 .feed-hint strong { color: #d8e2e8; font-size: 12px; }
 .feed-hint span { margin-top: 5px; color: #728797; font-size: 9px; }
 .feed-top,.feed-bottom,.detection-zone,.flight-reticle { z-index: 5; }
+.primary-station-feed {
+  position: absolute;
+  left: calc(var(--side) + 30px);
+  right: calc(var(--side) + 30px);
+  top: 16px;
+  bottom: 308px;
+  border: 1px solid rgba(139,180,202,.2);
+  border-radius: var(--radius);
+  background: #02070d;
+  box-shadow: 0 16px 36px rgba(0,0,0,.22);
+}
+.primary-station-feed img,
+.primary-station-feed .live-media { object-fit: contain; }
+.primary-station-feed .feed-overlay {
+  background:
+    linear-gradient(90deg, rgba(4,10,17,.46), transparent 24%, transparent 76%, rgba(4,10,17,.46)),
+    linear-gradient(180deg, rgba(4,10,17,.28), transparent 24%, transparent 64%, rgba(4,10,17,.58));
+}
+.primary-station-feed .feed-top {
+  left: 13px;
+  right: 13px;
+  top: 11px;
+}
+.primary-station-feed .feed-bottom {
+  left: 13px;
+  right: 13px;
+  bottom: 10px;
+}
+.map-feed { isolation: isolate; }
+.map-feed .gis-map { z-index: 0; }
+.map-feed .gis-map:after {
+  background: linear-gradient(180deg, rgba(5,13,23,.18), transparent 35%, rgba(5,13,23,.32));
+}
+.map-feed .map-search {
+  left: 10px;
+  top: 10px;
+  width: min(55%, 292px);
+  height: 32px;
+  background: rgba(5,13,23,.88);
+}
+.map-feed .map-search > span { margin-left: 10px; font-size: 17px; }
+.map-feed .map-search p { margin: 0; }
+.map-feed .map-search button { padding: 0 11px; }
+.map-feed .map-summary {
+  left: 10px;
+  top: 49px;
+  gap: 5px;
+}
+.map-feed .map-summary > span {
+  padding: 3px 7px;
+  background: rgba(5,13,23,.84);
+  font-size: 9px;
+}
+.map-feed .map-actions {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(5,13,23,.88);
+}
+.map-feed .map-actions button { width: 30px; height: 30px; font-size: 14px; }
+.map-feed .map-offline {
+  top: 52%;
+  width: 220px;
+  padding: 13px;
+}
+.map-feed-label {
+  position: absolute;
+  z-index: 9;
+  left: 10px;
+  right: 10px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  color: #c6d2d9;
+  font-size: 9px;
+}
+.map-feed-label span {
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(3,8,14,.72);
+}
+.map-feed-label b { font-size: 10px; }
 .console-status .dot:not(.green):not(.amber) { background: #647786; }
 .dispatch-button.queued {
   border-color: rgba(49,196,141,.3);
@@ -466,6 +550,7 @@ button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--
     padding: 7px 12px;
   }
   .right-column .panel-header h2 { font-size: 16px; }
+  .primary-station-feed { top: 12px; bottom: 250px; }
 
   .alert-panel { grid-template-rows: 44px 32px 1fr; }
   .alert-panel .panel-header { height: 44px; padding: 5px 12px; }

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#07101b">
   <title>景区安全智能监测平台</title>
   <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="/styles.css?v=20260815-11">
+  <link rel="stylesheet" href="/styles.css?v=20260817-13">
   <link rel="stylesheet" href="/accessibility.css?v=20260812-7">
 </head>
 <body>
@@ -27,25 +27,27 @@
     </header>
 
     <main class="workspace" id="main-content">
-      <section class="map-canvas" aria-label="景区实时态势地图">
-        <div id="gis-map" class="gis-map" aria-label="可缩放建筑物地图"></div>
-        <div class="map-offline" id="map-offline" hidden><strong>地图底图暂不可用</strong><span>设备与告警数据仍可正常查看</span></div>
+      <section class="map-canvas" aria-label="基站实时监控主画面">
+        <article class="feed primary-station-feed selected" data-video-channel="station">
+          <img src="/assets/scenic-monitor-demo.png" width="1664" height="936" fetchpriority="high" alt="滨水监测基站实时画面">
+          <div class="feed-overlay"></div>
+          <div class="feed-top"><span><i class="dot red"></i>LIVE · 演示</span><b>滨水固定摄像机</b></div>
+          <div class="feed-bottom"><span>基站主视角 · 1080P / 30 FPS</span><span>链路延迟 118 ms</span></div>
+        </article>
 
-        <div class="map-search"><span aria-hidden="true">⌕</span><p>搜索设备、告警或区域</p><button type="button">图层</button></div>
-        <div class="map-summary"><span><i class="dot green"></i>5 / 5 设备在线</span><span><i class="dot amber"></i>2 条活动告警</span><span>今日巡检 6 次</span></div>
-        <div class="map-actions"><button type="button" aria-label="放大地图">＋</button><button type="button" aria-label="缩小地图">−</button><button type="button" aria-label="定位地图">◎</button></div>
-
-        <section class="video-console" aria-label="现场视频联动">
+        <section class="video-console" aria-label="态势地图与无人机巡查">
           <div class="console-head">
-            <div><h2>现场视频联动</h2><span>基站与无人机双路监控</span></div>
-            <div class="console-status"><i class="dot" id="videoSummaryDot"></i><span id="videoSummaryText">视频链路检查中</span><button id="fullscreenFeeds" type="button">全屏查看</button></div>
+            <div><h2>态势与空中巡查</h2><span>地图定位与无人机实时画面</span></div>
+            <div class="console-status"><i class="dot" id="videoSummaryDot"></i><span id="videoSummaryText">监控链路检查中</span><button id="fullscreenFeeds" type="button">展开联动视图</button></div>
           </div>
           <div class="video-pair">
-            <article class="feed selected" data-video-channel="station">
-              <img src="/assets/scenic-monitor-demo.png" width="1664" height="936" fetchpriority="high" alt="滨水监测基站演示画面">
-              <div class="feed-overlay"></div>
-              <div class="feed-top"><span><i class="dot red"></i>LIVE · 演示</span><b>滨水固定摄像机</b></div>
-              <div class="feed-bottom"><span>1080P · 30 FPS</span><span>延迟 118 ms</span></div>
+            <article class="feed map-feed" aria-label="景区实时态势地图">
+              <div id="gis-map" class="gis-map" aria-label="可缩放建筑物地图"></div>
+              <div class="map-offline" id="map-offline" hidden><strong>地图底图暂不可用</strong><span>无人机画面与设备数据仍可正常查看</span></div>
+              <div class="map-search"><span aria-hidden="true">⌕</span><p>搜索设备或区域</p><button type="button">图层</button></div>
+              <div class="map-summary"><span><i class="dot green"></i>5 / 5 在线</span><span><i class="dot amber"></i>2 条告警</span></div>
+              <div class="map-actions"><button type="button" aria-label="放大地图">＋</button><button type="button" aria-label="缩小地图">−</button><button type="button" aria-label="定位地图">◎</button></div>
+              <div class="map-feed-label"><span>GIS · 实时态势</span><b>景区设备定位</b></div>
             </article>
             <article class="feed" data-video-channel="drone">
               <img src="/assets/drone-monitor-demo.png" width="1664" height="936" fetchpriority="high" alt="无人机航拍演示画面">

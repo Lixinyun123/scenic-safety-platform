@@ -204,6 +204,12 @@ class BaseStationServer(ThreadingHTTPServer):
         self.station_video_health_url = os.environ.get("STATION_VIDEO_HEALTH_URL", "")
         self.drone_video_url = os.environ.get("DRONE_VIDEO_URL", "")
         self.drone_video_health_url = os.environ.get("DRONE_VIDEO_HEALTH_URL", "")
+        # A cloud deployment must not become a public flight-control relay by
+        # accident.  This is deliberately opt-in and is only enabled after a
+        # trusted ground gateway has been connected to the server.
+        self.allow_flight_proxy = os.environ.get("ALLOW_FLIGHT_PROXY", "false").lower() in {
+            "1", "true", "yes", "on"
+        }
         # Local camera/flight-control traffic must never be sent through the
         # machine's Internet HTTP proxy.  A configured proxy previously made
         # healthy 192.168.x.x endpoints appear as 503/offline.
@@ -309,6 +315,7 @@ class BaseStationHandler(BaseHTTPRequestHandler):
             "/accessibility.css": web_root / "accessibility.css",
             "/map.js": web_root / "map.js",
             "/platform.js": web_root / "platform.js",
+            "/runtime-config.js": web_root / "runtime-config.js",
             "/vendor/leaflet/leaflet.css": web_root / "vendor" / "leaflet" / "leaflet.css",
             "/vendor/leaflet/leaflet.js": web_root / "vendor" / "leaflet" / "leaflet.js",
             "/assets/scenic-monitor-demo.png": web_root / "assets" / "scenic-monitor-demo.png",
@@ -359,6 +366,16 @@ class BaseStationHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         path = self.path.split("?", 1)[0]
         if path == "/api/flight-command":
+            if not self.server.allow_flight_proxy:
+                self.send_json(
+                    HTTPStatus.SERVICE_UNAVAILABLE,
+                    {
+                        "ok": False,
+                        "enabled": False,
+                        "error": "flight_gateway_not_enabled",
+                    },
+                )
+                return
             try:
                 length = int(self.headers.get("Content-Length", "0"))
             except ValueError:

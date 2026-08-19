@@ -1,0 +1,22 @@
+[Unit]
+Description=Scenic safety command platform
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=scenic
+Group=scenic
+WorkingDirectory=/opt/scenic-safety-platform
+EnvironmentFile=/etc/scenic-safety-platform/platform.env
+ExecStart=/usr/bin/python3 -m ground_station.base_station_server --host 127.0.0.1 --port 8090 --data-dir /var/lib/scenic-safety-platform
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/scenic-safety-platform
+
+[Install]
+WantedBy=multi-user.target

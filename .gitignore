@@ -38,6 +38,8 @@ windows_gateway/gateway-status.json
 
 # Models, datasets, dependencies and downloaded binaries
 **/vendor/
+!ground_station/web/vendor/
+!ground_station/web/vendor/**
 **/offline_wheels/
 **/*.pt
 **/*_ncnn_model/
