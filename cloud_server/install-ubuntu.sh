@@ -31,6 +31,7 @@ fi
 test -f "$APP_DIR/ground_station/base_station_server.py"
 test -f "$APP_DIR/cloud_server/scenic-platform.service"
 test -f "$APP_DIR/cloud_server/nginx-scenic-platform.conf"
+chmod 0755 "$APP_DIR/cloud_server/update-ubuntu.sh"
 
 ENV_FILE="$CONFIG_DIR/platform.env"
 if [[ ! -f "$ENV_FILE" ]]; then

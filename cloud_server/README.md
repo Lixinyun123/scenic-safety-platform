@@ -49,5 +49,5 @@ curl http://127.0.0.1:8090/api/base/status
 推送新代码到 GitHub 后，在服务器执行：
 
 ```bash
-sudo /opt/scenic-safety-platform/cloud_server/update-ubuntu.sh
+sudo bash /opt/scenic-safety-platform/cloud_server/update-ubuntu.sh
 ```
