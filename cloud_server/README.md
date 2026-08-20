@@ -44,6 +44,30 @@ curl http://127.0.0.1:8090/api/base/status
 1. LQ-3 → Windows 网关 → 服务器；
 2. LQ-3 → 可联网路由器 → 服务器。
 
+### 第一步视频回传（Windows 网关）
+
+在网页平台已部署完成后，在服务器执行：
+
+```bash
+sudo bash /opt/scenic-safety-platform/cloud_server/install-video-relay.sh --public-host 你的公网IP或域名
+```
+
+然后在阿里云轻量应用服务器防火墙中放行 `TCP 1935`、`TCP 8889`、`TCP/UDP 8189`。
+视频服务会生成独立的推流密码，需在**服务器终端本机**查看，不要贴进聊天或 GitHub：
+
+```bash
+sudo cat /etc/scenic-video/publish.env
+```
+
+将其中用户名、密码填写进 Windows 的 `windows_gateway/cloud-gateway.env`，地址格式为：
+
+```text
+rtmp://用户名:密码@你的公网IP:1935/station
+rtmp://用户名:密码@你的公网IP:1935/drone
+```
+
+随后在 Windows 运行 `windows_gateway/start_cloud_gateway.ps1`。页面会从服务器播放两路流，而不是让每一位访问者连接你的本地设备。
+
 ## 更新
 
 推送新代码到 GitHub 后，在服务器执行：

@@ -1,0 +1,20 @@
+[Unit]
+Description=MediaMTX public video relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mediamtx
+Group=mediamtx
+ExecStart=/opt/scenic-video/mediamtx /etc/scenic-video/mediamtx.yml
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadOnlyPaths=/opt/scenic-video /etc/scenic-video
+
+[Install]
+WantedBy=multi-user.target
